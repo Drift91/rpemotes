@@ -1,11 +1,15 @@
---- DPEmotes by andristum ---
---- Forked by TayMcKenzieNZ ---
---- Check for updates at https://github.com/TayMcKenzieNZ/dpemotes ---
+--- Maintained by TayMcKenzieNZ ---
+--- Check for updates at https://github.com/TayMcKenzieNZ/rpemotes ---
 
-fx_version 'adamant'
-
+fx_version 'cerulean'
 game 'gta5'
+version '1.0.3'
 lua54 'yes'
+
+dependencies {
+    '/server:5848',
+    '/onesync',
+}
 
 -- Remove the following lines if you would like to use the SQL keybinds. Requires oxmysql.
 
@@ -18,6 +22,7 @@ lua54 'yes'
 
 shared_scripts {
     'config.lua',
+    'Translations.lua'
 }
 
 server_scripts {
@@ -56,4 +61,10 @@ data_file 'DLC_ITYP_REQUEST' 'bzzz_prop_torch_fire001.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'natty_props_lollipops.ytyp'
 
 data_file 'DLC_ITYP_REQUEST' 'apple_1.ytyp'
+
+data_file 'DLC_ITYP_REQUEST' 'stream/bzzz_food_icecream_pack.ytyp'
+
+data_file 'DLC_ITYP_REQUEST' 'stream/bzzz_food_dessert_a.ytyp'
+
+data_file 'DLC_ITYP_REQUEST' 'stream/ultra_ringcase.ytyp'
 
