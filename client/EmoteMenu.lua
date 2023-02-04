@@ -37,7 +37,6 @@ end
 
 local EmoteTable = {}
 local FavEmoteTable = {}
-local KeyEmoteTable = {}
 local DanceTable = {}
 local AnimalTable = {}
 local PropETable = {}
@@ -47,21 +46,24 @@ local ShareTable = {}
 local FavoriteEmote = ""
 
 if Config.FavKeybindEnabled then
-    RegisterCommand('emotefav', function(source, args, raw) FavKeybind() end)
-
+    RegisterCommand('emotefav', function() FavKeybind() end)
     RegisterKeyMapping("emotefav", "Execute your favorite emote", "keyboard", Config.FavKeybind)
 
     local doingFavoriteEmote = false
+
     function FavKeybind()
-        if doingFavoriteEmote then return end
-        doingFavoriteEmote = true
-        if not IsPedSittingInAnyVehicle(PlayerPedId()) then
-            if FavoriteEmote ~= "" and (not CanUseFavKeyBind or CanUseFavKeyBind()) then
-                EmoteCommandStart(nil, { FavoriteEmote, 0 })
-                Wait(500)
+        if doingFavoriteEmote == false then
+            doingFavoriteEmote = true
+            if not IsPedSittingInAnyVehicle(PlayerPedId()) then
+                if FavoriteEmote ~= "" and (not CanUseFavKeyBind or CanUseFavKeyBind()) then
+                    EmoteCommandStart(nil, { FavoriteEmote, 0 })
+                    Wait(500)
+                end
             end
+        else
+            EmoteCancel()
+            doingFavoriteEmote = false
         end
-        doingFavoriteEmote = false
     end
 end
 
@@ -165,14 +167,14 @@ function AddEmoteMenu(menu)
 
     for a, b in pairsByKeys(RP.PropEmotes) do
         x, y, z = table.unpack(b)
-    
-        if b.AnimationOptions.PropTextureVariations then 
+
+        if b.AnimationOptions.PropTextureVariations then
             propitem = NativeUI.CreateListItem(z, b.AnimationOptions.PropTextureVariations, 1, "/e (" .. a .. ")")
             propmenu:AddItem(propitem)
         else
             propitem = NativeUI.CreateItem(z, "/e (" .. a .. ")")
             propmenu:AddItem(propitem)
-        end 
+        end
 
         table.insert(PropETable, a)
         if not Config.SqlKeybinding then
@@ -242,7 +244,7 @@ function AddEmoteMenu(menu)
     propmenu.OnItemSelect = function(sender, item, index)
         EmoteMenuStart(PropETable[index], "props")
     end
-    
+
    propmenu.OnListSelect = function(menu, item, itemIndex, listIndex)
         EmoteMenuStart(PropETable[itemIndex], "props", item:IndexToItem(listIndex).Value)
     end
@@ -317,7 +319,7 @@ if Config.Search then
                         local item = NativeUI.CreateItem(v.data[3], desc)
                         searchMenu:AddItem(item)
                     end
-                    
+
                     if v.table == "Dances" and Config.SharedEmotesEnabled then
                         local item2 = NativeUI.CreateItem(v.data[3], "")
                         sharedDanceMenu:AddItem(item2)
@@ -332,10 +334,10 @@ if Config.Search then
                     local data = results[index]
 
                     if data == Config.Languages[lang]['sharedanceemotes'] then return end
-                    if data == Config.Languages[lang]['rfavorite'] then 
+                    if data == Config.Languages[lang]['rfavorite'] then
                         FavoriteEmote = ""
                         ShowNotification(Config.Languages[lang]['rfavorite'], 2000)
-                        return 
+                        return
                     end
 
                     if favEnabled and IsControlPressed(0, 21) then
@@ -359,7 +361,7 @@ if Config.Search then
                             SimpleNotify(Config.Languages[lang]['sentrequestto'] .. GetPlayerName(target))
                         else
                             SimpleNotify(Config.Languages[lang]['nobodyclose'])
-                        end   
+                        end
                     end
                 end
 
@@ -447,15 +449,14 @@ end
 function AddFaceMenu(menu)
     local submenu = _menuPool:AddSubMenu(menu, Config.Languages[lang]['moods'], "", "", Menuthing, Menuthing)
 
-    facereset = NativeUI.CreateItem(Config.Languages[lang]['normalreset'], Config.Languages[lang]['resetdef'])
+    local facereset = NativeUI.CreateItem(Config.Languages[lang]['normalreset'], Config.Languages[lang]['resetdef'])
     submenu:AddItem(facereset)
     table.insert(FaceTable, "")
 
-    for a, b in pairsByKeys(RP.Expressions) do
-        x, y, z = table.unpack(b)
-        faceitem = NativeUI.CreateItem(a, "")
+    for name, data in pairsByKeys(RP.Expressions) do
+        local faceitem = NativeUI.CreateItem(data[2] or name, "")
         submenu:AddItem(faceitem)
-        table.insert(FaceTable, a)
+        table.insert(FaceTable, name)
     end
 
     submenu.OnItemSelect = function(sender, item, index)
@@ -528,10 +529,20 @@ function AddInfoMenu(menu)
         "<font color=\"#edae00\">-Moses-</font> for the custom emotes 🧡"))
     infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#D71196\">PataMods 🍓</font>",
         "<font color=\"#D71196\">PataMods</font> for the custom props 🍕"))
-   infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#FB7403\">Crowded1337 👝</font>",
-        "<font color=\"#FB7403\">Crowded1337</font> for the custom Gucci bag 👝"))
+   infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#FB7403\">Crowded1337 👜</font>",
+        "<font color=\"#FB7403\">Crowded1337</font> for the custom Gucci bag 👜"))
   infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#8180E5\">EnchantedBrownie 🍪</font>",
         "<font color=\"#8180E5\">EnchantedBrownie 🍪</font> for the custom animations 🍪"))
+  infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#0e64ed\">Mads 🤖</font>",
+        "<font color=\"#0e64ed\">Mads 🤖</font> for the addition of Exit Emotes, Crouch & Crawl ⚙️"))
+  infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#eb540e\">Copofiscool 🇦🇺</font>",
+        "<font color=\"#eb540e\">Copofiscool</font> for the Favorite Emote keybind toggle fix 🇦🇺"))
+  infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#40E0D0\">iSentrie </font>",
+        "<font color=\"#40E0D0\">iSentrie</font> for assisting with code 🛠️"))
+  infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#7B3F00\">Chocoholic Animations 🍫</font>",
+        "<font color=\"#7B3F00\">Chocoholic Animations</font> for the custom emotes 🍫"))
+  infomenu:AddItem(NativeUI.CreateItem("Thanks <font color=\"#34cf5d\">CrunchyCat 🐱</font>",
+        "<font color=\"#34cf5d\">CrunchyCat</font> for the custom emotes 🐱"))
 
     infomenu:AddItem(NativeUI.CreateItem("Thanks to the community", "Translations, bug reports and moral support 🌐"))
 end
