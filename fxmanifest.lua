@@ -3,7 +3,7 @@
 
 fx_version 'cerulean'
 game 'gta5'
-version '1.0.9'
+version '1.1.5'
 lua54 'yes'
 
 dependencies {
@@ -36,9 +36,12 @@ client_scripts {
     'NativeUI.lua',
     'client/AnimationList.lua',
     'client/AnimationListCustom.lua',
+    'client/Crouch.lua',
     'client/Emote.lua',
     'client/EmoteMenu.lua',
+    'client/Expressions.lua',
     'client/Keybinds.lua',
+    'client/Pointing.lua',
     'client/Ragdoll.lua',
     'client/Syncing.lua',
     'client/Walk.lua',
@@ -46,15 +49,11 @@ client_scripts {
 }
 
 
----- These are required for the custom props to load. If you have custom props, add data_file 'DLC_ITYP_REQUEST' 'custompropytypnamehere.ytyp' below ---------
+---- Loads all ytyp files for custom props to stream ---
 
 data_file 'DLC_ITYP_REQUEST' 'badge1.ytyp'
 
 data_file 'DLC_ITYP_REQUEST' 'copbadge.ytyp'
-
-data_file 'DLC_ITYP_REQUEST' 'prideprops_ytyp'
-
-data_file 'DLC_ITYP_REQUEST' 'lilflags_ytyp'
 
 data_file 'DLC_ITYP_REQUEST' 'bzzz_foodpack'
 
@@ -85,4 +84,8 @@ data_file 'DLC_ITYP_REQUEST' 'stream/bzzz_prop_cake_birthday_001.ytyp'
 data_file 'DLC_ITYP_REQUEST' 'stream/bzzz_prop_cake_baby_001.ytyp'
 
 data_file 'DLC_ITYP_REQUEST' 'stream/bzzz_prop_cake_casino001.ytyp'
+
+data_file 'DLC_ITYP_REQUEST' 'stream/brum_heart.ytyp'
+
+data_file 'DLC_ITYP_REQUEST' 'stream/taymckenzienz_rpemotes.ytyp'
 
